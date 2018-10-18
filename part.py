@@ -29,6 +29,7 @@ class Part:
     def draw(self):
         if self.type != '':
             self.image.blit(self.positionX, self.positionY)
+
     #Set the position of part, eventually snap to grid?
     def setPosition(self, x, y):
         self.positionX = x

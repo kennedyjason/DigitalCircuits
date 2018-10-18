@@ -77,13 +77,7 @@ def main():
                 return p
         print("None selected")
 
-    # Set up a label
-    #label = pyglet.text.Label('Hello World!')
-
-    # Set up an image
-    #image = pyglet.image.load(path)
-
-    # idk
+    #
     @window.event
     def on_draw():
         window.clear()
