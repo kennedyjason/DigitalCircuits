@@ -2,12 +2,15 @@ import pyglet
 from pyglet.window import mouse
 from part import Part
 
-def main():
-    parts = []
+# DigitalCircuits
+#
+# @author Jason Kennedy
+# @version 1
 
-    # Path to an image
-    #path = '/home/wastedatoms/github/DigitalParts/images/and.png'
-    label = pyglet.text.Label('-')
+def main():
+
+    # list of parts
+    parts = []
 
     #instantiate part as button
     AND = Part('and', 1, 0, 400)
@@ -16,7 +19,8 @@ def main():
     #throwaway part for starting select
     defaultSelected = Part('and', 0, 0, 0)
     defaultSelected.setSelected(True)
-    
+
+    #adding default parts to the list
     parts.append(defaultSelected)
     parts.append(AND)
     parts.append(OR)
@@ -41,7 +45,7 @@ def main():
             #
             #check if inside a part if so, select it
             elif 1:
-                counter = 0
+                counter = 0# to insure we do not deselect if we just selected
                 for p in parts:
                     if p.mouseInside(x,y):
                         findSelected().setSelected(False)
@@ -59,14 +63,19 @@ def main():
             
 
     #create a part
+    # parts is a list of parts, len(parts) is passed into the constructor of parts
+    # to be used as the id of the created part
+    # 100, 100 is just the default position of new parts
     def partCreate(type):
         parts.append(Part(type, len(parts), 100, 100))
 
+    #findSelected
+    # loops parts and check if a part is selected
     def findSelected():
         for p in parts:
             if p.getSelected():
                 return p
-        print("None selescted")
+        print("None selected")
 
     # Set up a label
     #label = pyglet.text.Label('Hello World!')
@@ -80,7 +89,7 @@ def main():
         window.clear()
         label.draw()
         for p in parts:
-            if p.getId() > 0:
+            if p.getId() > 0:# > 0 so that we do not check the default selected part
                 p.draw()
     run()
 
