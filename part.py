@@ -1,7 +1,8 @@
 import pyglet
 
-class Circuit:
-    def __init__(self, type, x, y):
+class Part:
+    def __init__(self, type, id, x, y):
+        self.id = id
         self.type = type
         self.image = None
         self.positionX = x
@@ -26,6 +27,14 @@ class Circuit:
 
     def getType(self):
         return self.type
+
+    def getId(self):
+        return self.id
+
+    def mouseInside(self, x, y):
+        if x > self.positionX and x < self.positionX + 100 and y > self.positionY and y < self.positionY + 50:
+            return True
+        return False
 
 def setup(self):
     if self.type == 'and':
