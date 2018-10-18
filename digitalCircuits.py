@@ -81,7 +81,6 @@ def main():
     @window.event
     def on_draw():
         window.clear()
-        label.draw()
         for p in parts:
             if p.getId() > 0:# > 0 so that we do not check the default selected part
                 p.draw()
