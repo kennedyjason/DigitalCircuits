@@ -8,11 +8,14 @@ import pyglet
 class Part:
     #Constructor
     #
-    # type: is one of two values(for now): and, or
-    #   id: is determined by the number of items in the parts list
-    # 	    at the time the part is created
-    #    x: the starting x position
-    #    y: the starting y position
+    #    type: is one of two values(for now): and, or
+    #      id: is determined by the number of items in the parts list
+    # 	       at the time the part is created
+    #       x: the starting x position
+    #       y: the starting y position
+    #  inputs: the number of inputs
+    # outputs: the number of outputs
+    # deleted: a temporary solution to deleting parts
     def __init__(self, type, id, x, y):
         self.id = id
         self.type = type
@@ -20,6 +23,11 @@ class Part:
         self.positionX = x
         self.positionY = y
         self.selected = False
+        self.inputs = 0
+        self.outputs = 0
+        self.button = False
+
+        self.deleted = False
 
         #Right now this just determines the image
         setup(self)
@@ -57,11 +65,36 @@ class Part:
             return True
         return False
 
+    #Remove part
+    def removePart(self):
+        self.deleted = True
+    def getRemoved(self):
+        return self.deleted
+
+    #set the part to a button
+    def setButton(self):
+        self.button = True
+    def getButton(self):
+        return self.button
+
+    #Updates the buttons image
+    def update(self):
+        if self.type == 'and':
+            self.image = pyglet.image.load("./images/and.png")
+        elif self.type == 'or':
+            self.image = pyglet.image.load("./images/or.png")
+
 #Set up the image of the parrt
 def setup(self):
-    if self.type == 'and':
-        self.image = pyglet.image.load("./images/and.png")
-    elif self.type == 'or':
-        self.image = pyglet.image.load("./images/or.png")
-    elif self.type == '':
-        pass
+    if not self.button:
+        #set up the image
+        if self.type == 'and':
+            self.image = pyglet.image.load("./images/andGate.png")
+            self.inputs = 2
+            self.outputs = 1
+        elif self.type == 'or':
+            self.image = pyglet.image.load("./images/orGate.png")
+            self.inputs = 2
+            self.outputs = 1
+        elif self.type == '':
+            pass

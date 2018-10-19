@@ -11,10 +11,15 @@ def main():
 
     # list of parts
     parts = []
-
+    # list of button
+    buttons = []
+    
     #instantiate part as button
-    AND = Part('and', 1, 0, 400)
-    OR = Part('or', 2, 0, 350)
+    AND = Part('and', 0, 5, 545)
+    OR = Part('or', 1, 5, 490)
+
+    AND.setButton()
+    OR.setButton()
 
     #throwaway part for starting select
     defaultSelected = Part('and', 0, 0, 0)
@@ -22,12 +27,15 @@ def main():
 
     #adding default parts to the list
     parts.append(defaultSelected)
-    parts.append(AND)
-    parts.append(OR)
+    buttons.append(AND)
+    buttons.append(OR)
 
     # Set up the window
-    window = pyglet.window.Window()
-
+    WIDTH = 1200
+    HEIGHT = 600
+    window = pyglet.window.Window(width=WIDTH, height=HEIGHT)
+    bgImage = pyglet.image.SolidColorImagePattern((100,100,100,255)).create_image(WIDTH, HEIGHT)
+    buttonLine = pyglet.image.SolidColorImagePattern((0,0,0,255)).create_image(2, HEIGHT)
 
     #
     @window.event
@@ -35,9 +43,9 @@ def main():
         if button == mouse.LEFT:
 
             #clicked a create button
-            if x > 0 and x < 101 and y > 400 and y < 450:#AND
+            if x > 5 and x < 106 and y > 545 and y < 595:#AND
                 partCreate('and')
-            elif x > 0 and x < 101 and y > 350 and y < 401:#OR
+            elif x > 5 and x < 106 and y > 485 and y < 535:#OR
                 partCreate('or')
 
 
@@ -56,6 +64,22 @@ def main():
                     defaultSelected.setSelected(True)
 
 
+        #Right Click            
+        elif button == mouse.RIGHT:
+
+            #clicked a part
+            #
+            # remove the clicked part
+            for p in parts:
+                if p.mouseInside(x, y) and not p.getButton():
+                    p.removePart()
+
+
+
+
+
+            
+
     @window.event
     def on_mouse_drag(x, y, dx, dy, buttons, modifiers):
         if buttons & mouse.LEFT:
@@ -67,7 +91,7 @@ def main():
     # to be used as the id of the created part
     # 100, 100 is just the default position of new parts
     def partCreate(type):
-        parts.append(Part(type, len(parts), 100, 100))
+        parts.append(Part(type, len(parts), 120, 545))# 10 pixels left of the AND button
 
     #findSelected
     # loops parts and check if a part is selected
@@ -81,8 +105,16 @@ def main():
     @window.event
     def on_draw():
         window.clear()
+        bgImage.blit(0,0)
+        buttonLine.blit(110, 0)#5 pixels to the right of the buttons
+        #draw buttons
+        for b in buttons:
+            b.update()#update button image
+            b.draw()
+        
+        #draw parts
         for p in parts:
-            if p.getId() > 0:# > 0 so that we do not check the default selected part
+            if p.getId() > 0 and not p.getRemoved():# > 0 so that we do not check the default selected and deleted part
                 p.draw()
     run()
 
